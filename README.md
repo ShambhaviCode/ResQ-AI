@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # ResQ AI
 
 ResQ AI is an AI-powered emergency response platform for citizens, volunteers, and administrators.
@@ -49,10 +49,4 @@ GEMINI_API_KEY=your_gemini_key
 MAPBOX_ACCESS_TOKEN=your_mapbox_token
 ```
 
-## Deployment
 
-This project is prepared for deployment on Vercel with environment variables configured in the dashboard.
-=======
-# ResQ-AI
-AI-powered disaster response platform built with Next.js, Supabase, and Mapbox.
->>>>>>> c389eefcb088b6cba309a52d9400ca9b83c452e6
