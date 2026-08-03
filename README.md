@@ -1,15 +1,12 @@
 # 🚨 ResQ AI
 
-<div align="center">
-
-# AI-Powered Disaster Response Platform
+## AI-Powered Disaster Response Platform
 
 ### Empowering Communities with Intelligent Emergency Coordination
 
 ResQ AI is a modern disaster response platform that helps **citizens**, **volunteers**, and **emergency coordinators** collaborate through one intelligent system. By combining AI-assisted incident analysis with real-time coordination, ResQ AI aims to reduce response times and improve emergency decision-making.
 
-🌐 **Live Demo**  
-https://resq-ai-tau.vercel.app
+🌐 **Live Demo:** https://resq-ai-tau.vercel.app
 
 ![Next.js](https://img.shields.io/badge/Next.js-15-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
@@ -19,15 +16,13 @@ https://resq-ai-tau.vercel.app
 ![Mapbox](https://img.shields.io/badge/Mapbox-Maps-000000)
 ![Vercel](https://img.shields.io/badge/Deploy-Vercel-black)
 
-</div>
-
 ---
 
 # 🌍 The Problem
 
 Natural disasters often expose one major challenge:
 
-**Critical information becomes fragmented when every second matters.**
+> **Critical information becomes fragmented when every second matters.**
 
 Emergency requests are scattered across phone calls, messaging platforms, and social media, making it difficult for responders to understand the situation, prioritize incidents, and coordinate rescue efforts efficiently.
 
@@ -44,16 +39,12 @@ ResQ AI brings these disconnected workflows into a single AI-powered platform de
 - Upload supporting images
 - Track submitted reports
 
----
-
 ## 🤝 Volunteer Dashboard
 
 - Browse nearby incidents
 - Accept rescue assignments
 - Update mission progress
 - Coordinate response activities
-
----
 
 ## 🛡️ Admin Command Center
 
@@ -62,8 +53,6 @@ ResQ AI brings these disconnected workflows into a single AI-powered platform de
 - Track volunteer activity
 - Coordinate emergency response
 - Operational analytics dashboard
-
----
 
 ## 🤖 AI Assistance
 
@@ -81,28 +70,28 @@ Designed to assist emergency responders with:
 
 ```text
 Citizen Reports Incident
-            │
-            ▼
- Incident Processing
-            │
-            ▼
-     AI Analysis
-            │
-            ▼
- Volunteer Assignment
-            │
-            ▼
- Admin Command Center
-            │
-            ▼
- Incident Resolution
+        │
+        ▼
+Incident Processing
+        │
+        ▼
+AI Analysis
+        │
+        ▼
+Volunteer Assignment
+        │
+        ▼
+Admin Command Center
+        │
+        ▼
+Incident Resolution
 ```
 
 ---
 
 # 🛠️ Technology Stack
 
-### Frontend
+## Frontend
 
 - Next.js 15
 - React
@@ -111,22 +100,22 @@ Citizen Reports Incident
 - Framer Motion
 - Lucide React
 
-### Backend
+## Backend
 
 - Supabase
 - PostgreSQL
-- Authentication
-- Storage
+- Supabase Authentication
+- Supabase Storage
 
-### Artificial Intelligence
+## Artificial Intelligence
 
 - Google Gemini API
 
-### Maps
+## Maps
 
 - Mapbox
 
-### Deployment
+## Deployment
 
 - Vercel
 
@@ -150,8 +139,6 @@ ResQ AI is currently under active development as a production-ready MVP.
 - Build & lint verification
 - Automated testing foundation
 
----
-
 ## 🚀 Currently In Progress
 
 - Supabase persistence
@@ -160,8 +147,6 @@ ResQ AI is currently under active development as a production-ready MVP.
 - Gemini-powered incident analysis
 - Interactive Mapbox visualization
 - Volunteer assignment workflow
-
----
 
 ## 🔮 Future Roadmap
 
@@ -177,7 +162,7 @@ ResQ AI is currently under active development as a production-ready MVP.
 
 # 📂 Project Structure
 
-```
+```text
 app/
 components/
 lib/
@@ -191,38 +176,38 @@ schema.sql
 
 # 🚀 Getting Started
 
-Clone the repository:
+### Clone the repository
 
 ```bash
 git clone https://github.com/ShambhaviCode/ResQ-AI.git
 cd ResQ-AI
 ```
 
-Install dependencies:
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-Create environment variables:
+### Configure environment variables
 
 ```bash
 cp .env.example .env.local
 ```
 
-Start the development server:
+### Start the development server
 
 ```bash
 npm run dev
 ```
 
-Build for production:
+### Build for production
 
 ```bash
 npm run build
 ```
 
-Run lint checks:
+### Run lint checks
 
 ```bash
 npm run lint
@@ -242,7 +227,7 @@ ResQ AI explores how Artificial Intelligence can improve disaster response by he
 
 Technology has the greatest impact when it helps people during their most difficult moments.
 
-Our vision is to build an intelligent emergency response platform that communities can rely on before, during, and after disasters by combining AI, geospatial intelligence, and collaborative coordination into one unified system.
+Our vision is to build an intelligent emergency response platform that communities can rely on before, during, and after disasters by combining artificial intelligence, geospatial intelligence, and collaborative coordination into one unified system.
 
 ---
 
@@ -254,16 +239,12 @@ This project is licensed under the **MIT License**.
 
 # 👩‍💻 Developer
 
-Shambhavi
+**Shambhavi**
 
 GitHub: https://github.com/ShambhaviCode
 
 ---
 
-<div align="center">
-
-### ⭐ Every Second Matters.
+## ⭐ Every Second Matters.
 
 Building technology that helps save time when lives depend on it.
-
-</div>
