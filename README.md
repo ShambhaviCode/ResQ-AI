@@ -254,7 +254,7 @@ This project is licensed under the **MIT License**.
 
 # 👩‍💻 Developer
 
-**Shambhavi **
+Shambhavi
 
 GitHub: https://github.com/ShambhaviCode
 
