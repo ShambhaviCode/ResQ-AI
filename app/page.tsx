@@ -52,8 +52,8 @@ export default function HomePage() {
               <Link href="/incident/new" className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 font-medium text-slate-950 transition hover:bg-slate-200">
                 Report incident <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/dashboard" className="rounded-full border border-white/15 px-5 py-3 font-medium text-slate-200 transition hover:bg-white/10">
-                Explore live workspace
+              <Link href="/login" className="rounded-full border border-white/15 px-5 py-3 font-medium text-slate-200 transition hover:bg-white/10">
+                Sign in to workspace
               </Link>
             </div>
           </div>

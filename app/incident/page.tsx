@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Activity, BrainCircuit, ShieldAlert, TimerReset, Waves } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { createSampleIncidents, getStoredIncidents, type IncidentRecord } from '@/lib/resq-store';
+import { createSampleIncidents, loadIncidentsFromBackend, type IncidentRecord } from '@/lib/resq-store';
 
 const cards = [
   { title: 'Incident summary', value: 'summary', icon: BrainCircuit },
@@ -17,8 +17,10 @@ export default function IncidentPage() {
   const [incident, setIncident] = useState<IncidentRecord | null>(null);
 
   useEffect(() => {
-    const incidents = getStoredIncidents();
-    setIncident(incidents[0] ?? createSampleIncidents()[0]);
+    void (async () => {
+      const incidents = await loadIncidentsFromBackend();
+      setIncident(incidents[0] ?? createSampleIncidents()[0]);
+    })();
   }, []);
 
   const analysis = useMemo(() => incident?.analysis, [incident]);

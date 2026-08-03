@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toaster';
-import { setStoredUser, type StoredUser, type UserRole } from '@/lib/resq-store';
+import { persistUserToBackend, type StoredUser, type UserRole } from '@/lib/resq-store';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function SignupPage() {
   const [role, setRole] = useState<UserRole>('Citizen');
   const { pushToast } = useToast();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const user: StoredUser = {
       id: crypto.randomUUID(),
@@ -25,8 +25,12 @@ export default function SignupPage() {
       password,
       role,
     };
-    setStoredUser(user);
+    await persistUserToBackend(user);
     pushToast('Account created successfully. Welcome to ResQ AI.', 'success');
+    if (role === 'Admin') {
+      router.push('/admin');
+      return;
+    }
     router.push('/dashboard');
   };
 

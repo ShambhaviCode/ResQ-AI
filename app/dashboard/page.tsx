@@ -6,8 +6,9 @@ import { AlertTriangle, BellRing, Compass, MapPin, Users2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { MapboxMap } from '@/components/ui/mapbox-map';
 import { useToast } from '@/components/ui/toaster';
-import { createSampleIncidents, getStoredIncidents, getStoredUser, saveStoredIncidents, type IncidentRecord, type UserRole } from '@/lib/resq-store';
+import { createSampleIncidents, getStoredUser, loadIncidentsFromBackend, type IncidentRecord, type UserRole } from '@/lib/resq-store';
 
 const roleCopy: Record<UserRole, { heading: string; description: string }> = {
   Citizen: {
@@ -32,10 +33,11 @@ export default function DashboardPage() {
   useEffect(() => {
     const storedUser = getStoredUser();
     setUser(storedUser);
-    const storedIncidents = getStoredIncidents();
-    const seed = storedIncidents.length > 0 ? storedIncidents : createSampleIncidents();
-    setIncidents(seed);
-    saveStoredIncidents(seed);
+
+    void (async () => {
+      const loaded = await loadIncidentsFromBackend();
+      setIncidents(loaded.length > 0 ? loaded : createSampleIncidents());
+    })();
   }, []);
 
   const metrics = useMemo(() => {
@@ -122,7 +124,9 @@ export default function DashboardPage() {
                     <MapPin className="h-4 w-4" />
                     Downtown district • 3 hotspots within 2 km
                   </div>
-                  <div className="mt-4 h-32 rounded-2xl border border-white/10 bg-slate-900/70" />
+                  <div className="mt-4">
+                    <MapboxMap className="h-40" />
+                  </div>
                 </div>
               </CardContent>
             </Card>

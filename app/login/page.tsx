@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toaster';
-import { getStoredUser, setStoredUser, type StoredUser } from '@/lib/resq-store';
+import { getStoredUser, persistUserToBackend, type StoredUser } from '@/lib/resq-store';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const { pushToast } = useToast();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const storedUser = getStoredUser();
     if (!storedUser || storedUser.email !== email || storedUser.password !== password) {
@@ -22,8 +22,12 @@ export default function LoginPage() {
       return;
     }
 
-    setStoredUser(storedUser);
+    await persistUserToBackend(storedUser);
     pushToast('Welcome back. Routing to your workspace.', 'success');
+    if (storedUser.role === 'Admin') {
+      router.push('/admin');
+      return;
+    }
     router.push('/dashboard');
   };
 

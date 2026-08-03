@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Activity, AlertTriangle, Landmark, Radar, ShieldCheck, Users2, Clock3, Sparkles } from 'lucide-react';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { createSampleIncidents, getStoredIncidents, type IncidentRecord } from '@/lib/resq-store';
+import { createSampleIncidents, loadIncidentsFromBackend, type IncidentRecord } from '@/lib/resq-store';
 
 const stats = [
   { label: 'Live incidents', value: '12', icon: AlertTriangle },
@@ -17,8 +17,10 @@ export default function AdminPage() {
   const [incidents, setIncidents] = useState<IncidentRecord[]>([]);
 
   useEffect(() => {
-    const stored = getStoredIncidents();
-    setIncidents(stored.length > 0 ? stored : createSampleIncidents());
+    void (async () => {
+      const loaded = await loadIncidentsFromBackend();
+      setIncidents(loaded.length > 0 ? loaded : createSampleIncidents());
+    })();
   }, []);
 
   const activeCount = useMemo(() => incidents.filter((incident) => incident.status !== 'Resolved').length, [incidents]);

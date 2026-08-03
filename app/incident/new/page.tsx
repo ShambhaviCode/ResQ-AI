@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -8,20 +9,10 @@ import { Camera, MapPin, Sparkles, Waves } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/components/ui/toaster';
-import { getStoredIncidents, saveStoredIncidents, type IncidentRecord, type AiAnalysis } from '@/lib/resq-store';
+import { persistIncidentImage, persistIncidentToBackend, type IncidentRecord } from '@/lib/resq-store';
+import { createAiAnalysisPayload } from '@/lib/ai';
 
 const severityOptions = ['Low', 'Medium', 'High', 'Critical'];
-
-function createAiAnalysis(title: string, location: string, severity: string): AiAnalysis {
-  const priorityScore = Math.min(98, 70 + severityOptions.indexOf(severity) * 7 + title.length % 6);
-  return {
-    summary: `${title} near ${location} requires rapid triage and coordinated support.`,
-    severity,
-    priorityScore,
-    resources: ['Medical unit', 'Volunteer team', 'Safety crew'],
-    safetyRecommendations: ['Secure the affected perimeter', 'Maintain clear evacuation access'],
-  };
-}
 
 export default function NewIncidentPage() {
   const router = useRouter();
@@ -31,31 +22,55 @@ export default function NewIncidentPage() {
   const [location, setLocation] = useState('');
   const [severity, setSeverity] = useState('High');
   const [imageUrl, setImageUrl] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const preview = useMemo(() => (imageUrl ? imageUrl : 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=800&q=80'), [imageUrl]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
 
-    const incident: IncidentRecord = {
-      id: `inc-${crypto.randomUUID().slice(0, 6)}`,
-      title,
-      description,
-      location,
-      severity,
-      imageUrl: imageUrl || preview,
-      status: 'Reported',
-      createdAt: new Date().toISOString(),
-      analysis: createAiAnalysis(title, location, severity),
-    };
+    try {
+      const response = await fetch('/api/ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, location, severity, description }),
+      });
 
-    const incidents = getStoredIncidents();
-    saveStoredIncidents([incident, ...incidents]);
-    pushToast('Incident reported. AI analysis will be visible in the command center.', 'success');
-    setIsSubmitting(false);
-    router.push('/dashboard');
+      const analysis = response.ok
+        ? await response.json()
+        : createAiAnalysisPayload({ title, location, severity, description });
+
+      const incidentId = `inc-${crypto.randomUUID().slice(0, 6)}`;
+      const uploadedImageUrl = selectedFile ? await persistIncidentImage(incidentId, selectedFile) : null;
+
+      const incident: IncidentRecord = {
+        id: incidentId,
+        title,
+        description,
+        location,
+        severity,
+        imageUrl: uploadedImageUrl ?? (imageUrl || preview),
+        status: 'Reported',
+        createdAt: new Date().toISOString(),
+        analysis: {
+          summary: analysis.summary ?? createAiAnalysisPayload({ title, location, severity, description }).summary,
+          severity: analysis.severity ?? severity,
+          priorityScore: Number(analysis.priorityScore ?? 72),
+          resources: Array.isArray(analysis.resources) ? analysis.resources : createAiAnalysisPayload({ title, location, severity, description }).resources,
+          safetyRecommendations: Array.isArray(analysis.safetyRecommendations) ? analysis.safetyRecommendations : createAiAnalysisPayload({ title, location, severity, description }).safetyRecommendations,
+        },
+      };
+
+      await persistIncidentToBackend(incident);
+      pushToast('Incident reported. AI analysis will be visible in the command center.', 'success');
+      router.push('/dashboard');
+    } catch {
+      pushToast('The report was saved locally, but the AI analysis was unavailable.', 'error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -84,7 +99,7 @@ export default function NewIncidentPage() {
               <CardDescription>Use imagery and precise location context to speed up rescues.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <img src={preview} alt="Incident preview" className="h-64 w-full rounded-[24px] object-cover" />
+              <Image src={preview} alt="Incident preview" width={800} height={500} className="h-64 w-full rounded-[24px] object-cover" />
               <label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-dashed border-white/10 bg-slate-800/70 px-4 py-3 text-sm text-slate-300">
                 <Camera className="h-4 w-4" />
                 Upload incident image
@@ -92,6 +107,7 @@ export default function NewIncidentPage() {
                   const file = event.target.files?.[0];
                   if (file) {
                     const nextUrl = URL.createObjectURL(file);
+                    setSelectedFile(file);
                     setImageUrl(nextUrl);
                   }
                 }} />
