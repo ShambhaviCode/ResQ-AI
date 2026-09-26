@@ -1,5 +1,7 @@
 # 🚨 ResQ AI
 
+[![Tests](https://github.com/ShambhaviCode/ResQ-AI/actions/workflows/test.yml/badge.svg)](https://github.com/ShambhaviCode/ResQ-AI/actions/workflows/test.yml)
+
 ## AI-Powered Disaster Response Platform
 
 ### Empowering Communities with Intelligent Emergency Coordination
